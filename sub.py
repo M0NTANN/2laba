@@ -1,26 +1,28 @@
 import datetime
-
 import gmpy2
 from sympy import Integer
 
 
-def sub(A_str, B_str):
+def sub(num1, num2):
+
+    # Старт работы программы
     start = datetime.datetime.now()
 
+    # Проверяем не больше ли второе число
     is_negative = False
-    if int(A_str) < int(B_str):
-        # Если A меньше B, инвертируем их для вычитания
-        A_str, B_str = B_str, A_str
+    if int(num1) < int(num2):
+        # Если num1 меньше num2, инвертируем их для вычитания
+        num1, num2 = num2, num1
         is_negative = True
 
     # Преобразуем строки в массивы цифр
-    A = [int(digit) for digit in A_str]
-    B = [int(digit) for digit in B_str]
+    num1 = [int(digit) for digit in num1]
+    num2 = [int(digit) for digit in num2]
 
     # Убедимся, что числа одинаковой длины. Если нужно, добавим ведущие нули в меньшую длину
-    n = max(len(A), len(B))
-    A = [0] * (n - len(A)) + A
-    B = [0] * (n - len(B)) + B
+    n = max(len(num1), len(num2))
+    num1 = [0] * (n - len(num1)) + num1
+    num2 = [0] * (n - len(num2)) + num2
 
     # Массив для результата вычитания
     result = []
@@ -28,7 +30,7 @@ def sub(A_str, B_str):
 
     # Перебор цифр с конца (с младших разрядов)
     for i in range(n - 1, -1, -1):
-        diff = A[i] - B[i] - borrow
+        diff = num1[i] - num2[i] - borrow
         if diff < 0:
             diff += 10  # Заимствование (borrow)
             borrow = 1
@@ -43,19 +45,22 @@ def sub(A_str, B_str):
     while len(result) > 1 and result[0] == 0:
         result.pop(0)
 
+    # Если второе число было больше первого ставим "-"
     if is_negative:
         result.insert(0, '-')
 
+    # Конец работы программы
     end = datetime.datetime.now() - start
 
+    # Разворачиваем список результата и преобразуем в число
     result = int(''.join(map(str, result[::1])))
 
     return end, result
 
 
 
-num1 = '2223423423423423234234232324324234269022234234'
-num2 = '49228234234232342342342342342342344232349'
+num1 = '2223423423423423234234232324324234269022234234222342342342342323423423232432423426902223423422234234234234232342342323243242342690222342342223423423423423234234232324324234269022234234'
+num2 = '492282342342323423423423423423423442323494922823423423234234234234234234234423234949228234234232342342342342342342344232349'
 end, result = sub(num1, num2)
 print(f"Результат вычитания : {result}  Время выполнения: {end}")
 

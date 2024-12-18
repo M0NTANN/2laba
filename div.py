@@ -1,27 +1,26 @@
 import datetime
-
 import gmpy2
 from sympy import Integer
 
-def newton_method_division(A, B, iterations=10):
+def newton_method_division(num1, num2, iterations=10):
     # Начальное приближение для 1/y
-    inv_y = 1 / B
+    inv_y = 1 / num2
 
     # Итерации Ньютоновского метода
     for _ in range(iterations):
-        inv_y = inv_y * (2 - B * inv_y)
+        inv_y = inv_y * (2 - num2 * inv_y)
 
     # Результат деления
-    return A * inv_y
+    return num1 * inv_y
 
 
-def div(A, B):
+def div(num1, num2):
     # Базовый случай
-    if A < B:
-        return (0, A)  # Если x меньше y, то деление дает 0, а остаток равен x
+    if num1 < num2:
+        return (0, num1)  # Если x меньше y, то деление дает 0, а остаток равен x
 
     # Рекурсивный случай
-    quotient, remainder = div(A - B, B)
+    quotient, remainder = div(num1 - num2, num2)
     return (quotient + 1, remainder)
 
 # Пример использования

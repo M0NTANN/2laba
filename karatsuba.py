@@ -1,34 +1,35 @@
 import datetime
-
 import gmpy2
 from sympy import Integer
 
 
-def karatsuba_multiply(A, B):
+def karatsubaMultiply(num1, num2):
 
     # Определение длины чисел и середины
-    n = max(len(str(A)), len(str(B)))
+    n = max(len(str(num1)), len(str(num2)))
 
-    if n<2:
-        return A * B
-    k = (n + 1) // 2  # Округление вверх для k
+    # Если n > 1, тогда результат не может быть получен обычным умножением
+    if n == 1:
+        return num1 * num2
+
+    k = n  // 2  # Округление вверх для k
 
 
 
     # Деление чисел на две части
-    A0 = A % (10 ** k)  # Младшая часть A
-    A1 = A // (10 ** k)  # Старшая часть A
-    B0 = B % (10 ** k)  # Младшая часть B
-    B1 = B // (10 ** k)  # Старшая часть B
+    A0 = num1 % (10 ** k)  # Младшая часть num1
+    A1 = num1 // (10 ** k)  # Старшая часть num1
+    B0 = num2 % (10 ** k)  # Младшая часть num2
+    B1 = num2 // (10 ** k)  # Старшая часть num2
 
     # Знаки для промежуточных вычислений
     sA = 1 if (A0 - A1) >= 0 else -1
     sB = 1 if (B0 - B1) >= 0 else -1
 
     # Рекурсивные вызовы для C0, C1 и C2
-    C0 = karatsuba_multiply(A0, B0)
-    C1 = karatsuba_multiply(A1, B1)
-    C2 = karatsuba_multiply(abs(A0 - A1), abs(B0 - B1))
+    C0 = karatsubaMultiply(A0, B0)
+    C1 = karatsubaMultiply(A1, B1)
+    C2 = karatsubaMultiply(abs(A0 - A1), abs(B0 - B1))
 
     # Результат согласно формуле
     result = C0 + ((C0 + C1 - sA * sB * C2) * (10 ** k)) + (C1 * (10 ** (2 * k)))
@@ -37,10 +38,10 @@ def karatsuba_multiply(A, B):
     return result
 
 # Пример использования
-num_1 = '123433'
-num_2 = '567833'
+num_1 = 123433123433123433123433123433123433123433123433123433123433123433123433123433123433123433123433
+num_2 = 567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833567833
 start = datetime.datetime.now()
-result = karatsuba_multiply(int(num_1), int(num_2))
+result = karatsubaMultiply(int(num_1), int(num_2))
 end = datetime.datetime.now() - start
 print(f"Результат умножения: {result} Время выполнения: {end}")
 
