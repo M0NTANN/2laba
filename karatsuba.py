@@ -1,8 +1,10 @@
+import datetime
 
+import gmpy2
+from sympy import Integer
 
 
 def karatsuba_multiply(A, B):
-
 
     # Определение длины чисел и середины
     n = max(len(str(A)), len(str(B)))
@@ -10,6 +12,8 @@ def karatsuba_multiply(A, B):
     if n<2:
         return A * B
     k = (n + 1) // 2  # Округление вверх для k
+
+
 
     # Деление чисел на две части
     A0 = A % (10 ** k)  # Младшая часть A
@@ -28,13 +32,30 @@ def karatsuba_multiply(A, B):
 
     # Результат согласно формуле
     result = C0 + ((C0 + C1 - sA * sB * C2) * (10 ** k)) + (C1 * (10 ** (2 * k)))
+
+
     return result
 
 # Пример использования
-x = 1234
-y = 5678
-result = karatsuba_multiply(x, y)
-print("Результат умножения:", result)
+num_1 = '123433'
+num_2 = '567833'
+start = datetime.datetime.now()
+result = karatsuba_multiply(int(num_1), int(num_2))
+end = datetime.datetime.now() - start
+print(f"Результат умножения: {result} Время выполнения: {end}")
 
+
+start = datetime.datetime.now()
+res = gmpy2.mul(int(num_1) , int(num_2))
+end = datetime.datetime.now() - start
+print(f"\nРезультат умножения gmpy2: {res}  Время выполнения: {end}")
+
+
+
+
+start = datetime.datetime.now()
+result = Integer(num_1) * Integer(num_2)
+end = datetime.datetime.now() - start
+print(f"\nРезультат умножения sympy: {res}  Время выполнения: {end}")
 
 
