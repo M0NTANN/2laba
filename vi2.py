@@ -32,7 +32,7 @@ def main():
             start = datetime.now()
             result = x + y
             end = datetime.now() - start
-            print(f"Результат numpy сложение векторов: {result}  \n     Время выполнения: {end}\n\n")
+            print(f"Результат numpy сложение: {result}  \n     Время выполнения: {end}\n\n")
 
 
 
@@ -53,7 +53,7 @@ def main():
             start = datetime.now()
             result = x - y
             end = datetime.now() - start
-            print(f"\nРезультат поэлементное вычитание векторов: {int(result)}  \n Время выполнения: {end}\n\n")
+            print(f"\nРезультат вычитания библиотека mpmath: {int(result)}  \n Время выполнения: {end}\n\n")
 
 
         if choiceU == 3:
@@ -73,7 +73,7 @@ def main():
             start = datetime.now()
             res = x * y
             end = datetime.now() - start
-            print(f"\nРезультат вычитания gmpy2: {res}  \n      Время выполнения: {end}")
+            print(f"\nРезультат умножения mpmath: {res}  \n      Время выполнения: {end}")
 
 
 def sub(x, y):
@@ -175,10 +175,11 @@ def karatsubaMul(x, y):
 
     # Определение длины чисел и середины
     n = len(x)
-
+    x = [0] * (n - len(x)) + x
+    y = [0] * (n - len(y)) + y
     # Если n > 1, тогда результат не может быть получен обычным умножением
     if n == 1:
-        return x[0] * y[0]
+        return int(x[0]) * int(y[0])
 
     k = n // 2  # Округление вверх для k
 
