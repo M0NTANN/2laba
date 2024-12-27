@@ -1,6 +1,4 @@
 from datetime import datetime
-
-import numpy
 from mpmath import mp
 import numpy as np
 import random
@@ -9,30 +7,31 @@ import random
 def main():
     while True:
         print("\n\n\nВыберите действие: \n"
-              "1 Сложение \n"
-              "2 Вычитание \n"
-              "3 Умножение \n"
+              "1 поэлементного сложения векторов \n"
+              "2 скалярное произведения векторов \n"
+              "3 умножения матриц \n"
               "4 Выход")
         choiceU = int(input(">>>"))
 
         if choiceU == 1:
-            n = int(input("Введите размер массива: "))
-            x = [random.randint(0, 9) for _ in range(n)]
-            y = [random.randint(0, 9) for _ in range(n)]
-            print(f"{x}")
-            print(f"{y}")
-            start = datetime.now()
-            result = add(x, y)
-            end = datetime.now() - start
-            print(f"\nРезультат сложения : {result}  \n       Время выполнения: {end}\n\n")
+            for n in range(100, 2100, 100):
+                n = int(input("Введите размер массива: "))
+                x = [random.randint(0, 9) for _ in range(n)]
+                y = [random.randint(0, 9) for _ in range(n)]
+                print(f"{x}")
+                print(f"{y}")
+                start = datetime.now()
+                result = add(x, y)
+                end = datetime.now() - start
+                print(f"\nРезультат сложения : {result}  \n       Время выполнения: {end}\n\n")
 
-            mp.dps = 100
-            x = mp.mpf(int(''.join(map(str, x))))
-            y = mp.mpf(int(''.join(map(str, y))))
-            start = datetime.now()
-            result = x + y
-            end = datetime.now() - start
-            print(f"Результат numpy сложение: {result}  \n     Время выполнения: {end}\n\n")
+                mp.dps = 100
+                #x = mp.mpf(int(''.join(map(str, x))))
+                #y = mp.mpf(int(''.join(map(str, y))))
+                start = datetime.now()
+                result = np.add(int(''.join(map(str, x))), int(''.join(map(str, y))))
+                end = datetime.now() - start
+        print(f"Результат numpy сложение: {result}  \n     Время выполнения: {end}\n\n")
 
 
 
@@ -43,37 +42,63 @@ def main():
             print(f"{x}")
             print(f"{y}")
             start = datetime.now()
-            result = sub(x, y)
-            end = datetime.now() - start
-            print(f"Результат вычитания : {result}  \n       Время выполнения: {end}\n\n")
-
-            mp.dps = 100
-            x = mp.mpf(int(''.join(map(str, x))))
-            y = mp.mpf(int(''.join(map(str, y))))
-            start = datetime.now()
-            result = x - y
-            end = datetime.now() - start
-            print(f"\nРезультат вычитания библиотека mpmath: {int(result)}  \n Время выполнения: {end}\n\n")
-
-
-        if choiceU == 3:
-            n = int(input("Введите размер массива: "))
-            x = [random.randint(0, 9) for _ in range(n)]
-            y = [random.randint(0, 9) for _ in range(n)]
-            print(f"{x}")
-            print(f"{y}")
-            start = datetime.now()
-            result = karatsubaMul(x, y)
+            result = mulVek(x, y)
             end = datetime.now() - start
             print(f"Результат умножения: {result} \n        Время выполнения: {end}\n\n")
 
             mp.dps = 100
-            x = mp.mpf(int(''.join(map(str,x))))
-            y = mp.mpf(int(''.join(map(str,y))))
+            # x = mp.mpf(int(''.join(map(str,x))))
+            # y = mp.mpf(int(''.join(map(str,y))))
             start = datetime.now()
-            res = x * y
+            res = np.dot(x, y)
             end = datetime.now() - start
             print(f"\nРезультат умножения mpmath: {res}  \n      Время выполнения: {end}")
+
+
+
+        if choiceU == 3:
+            n = int(input("Введите размер массива: "))
+            m = random.randint(2, 4)
+            x = [[random.randint(0, 9) for _ in range(n)] for _ in range(n)]
+            y = [[random.randint(0, 9) for _ in range(n)] for _ in range(n)]
+            #x = [[1, 2], [3, 4]]
+            #y = [[5, 6], [7, 8]]
+
+            print(f"{x}")
+            print(f"{y}")
+            start = datetime.now()
+            result = matrix_multiply(x, y)
+            end = datetime.now() - start
+            print(f"Результат умножения: {result} \n        Время выполнения: {end}\n\n")
+
+            mp.dps = 100
+            #x = mp.mpf(int(''.join(map(str,x))))
+            #y = mp.mpf(int(''.join(map(str,y))))
+            start = datetime.now()
+            res = np.dot(x, y)
+            end = datetime.now() - start
+            print(f"\nРезультат умножения mpmath: {res}  \n      Время выполнения: {end}")
+
+
+def matrix_multiply(A, B):
+    # Получаем размеры матриц
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+
+    # Проверяем, что матрицы можно перемножить
+    if cols_A != rows_B:
+        raise ValueError("Число столбцов первой матрицы должно быть равно числу строк второй матрицы.")
+
+    # Инициализация результирующей матрицы с нулями
+    result = [[0] * cols_B for _ in range(rows_A)]
+
+    # Умножение матриц
+    for i in range(rows_A):  # Проход по строкам A
+        for j in range(cols_B):  # Проход по столбцам B
+            for k in range(cols_A):  # Проход по элементам строки A и столбца B
+                result[i][j] += A[i][k] * B[k][j]
+
+    return result
 
 
 def sub(x, y):
@@ -145,28 +170,13 @@ def add(x, y):
 
     return result
 
-def elemAddVek(x, y):
-    # Выравниваем длины массивов, добавляем ведущие нули
-    if len(x) < len(y):
-        x = np.pad(x, (len(y) - len(x), 0), 'constant')
-    elif len(y) < len(x):
-        y = np.pad(y, (len(x) - len(y), 0), 'constant')
-    # Поэлементное сложение
-    result = x + y
+def mulVek(x, y):
+    result = 0  # Список для хранения результата поразрядного сложения
 
-    # Обработка переноса
-    for i in range(len(result) - 1, 0, -1):
-        if result[i] >= 10:
-            result[i] -= 10
-            result[i - 1] += 1
-
-    # Если есть перенос на старший разряд
-    if result[0] >= 10:
-        result[0] -= 10
-        result = np.insert(result, 0, 1)
-
+    for i in range(len(x) - 1, -1, -1):
+        result += x[i] * y[i]   # Сумма теку
     # Результат в правильном порядке
-    return int(''.join(map(str, result[::1])))
+    return result
 
 
 
