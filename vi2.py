@@ -15,69 +15,74 @@ def main():
 
         if choiceU == 1:
             for n in range(100, 2100, 100):
-                n = int(input("Введите размер массива: "))
+                print(f"Разрядность {n}\n")
                 x = [random.randint(0, 9) for _ in range(n)]
                 y = [random.randint(0, 9) for _ in range(n)]
-                print(f"{x}")
-                print(f"{y}")
+                #print(f"{x}")
+                #print(f"{y}")
                 start = datetime.now()
                 result = add(x, y)
                 end = datetime.now() - start
-                print(f"\nРезультат сложения : {result}  \n       Время выполнения: {end}\n\n")
+                print(f"Собственный алгоритм поэлементного сложения векторов: время выполнения: {end}\n")
 
                 mp.dps = 100
                 #x = mp.mpf(int(''.join(map(str, x))))
                 #y = mp.mpf(int(''.join(map(str, y))))
+                #x = np.array(x)
+                #y = np.array(y)
                 start = datetime.now()
-                result = np.add(int(''.join(map(str, x))), int(''.join(map(str, y))))
+                result = np.add(x, y)
                 end = datetime.now() - start
-        print(f"Результат numpy сложение: {result}  \n     Время выполнения: {end}\n\n")
+                print(f" numpy: время выполнения: {end}\n\n\n\n")
 
 
 
         if choiceU == 2:
-            n = int(input("Введите размер массива: "))
-            x = [random.randint(0, 9) for _ in range(n)]
-            y = [random.randint(0, 9) for _ in range(n)]
-            print(f"{x}")
-            print(f"{y}")
-            start = datetime.now()
-            result = mulVek(x, y)
-            end = datetime.now() - start
-            print(f"Результат умножения: {result} \n        Время выполнения: {end}\n\n")
+            for n in range(100, 2100, 100):
+                print(f"Разрядность {n}\n")
+                x = [random.randint(0, 9) for _ in range(n)]
+                y = [random.randint(0, 9) for _ in range(n)]
+                #print(f"{x}")
+                #print(f"{y}")
+                start = datetime.now()
+                result = mulVek(x, y)
+                end = datetime.now() - start
+                print(f"{result} Собственный алгоритм скалярного произведения векторов: время выполнения: {end}\n")
 
-            mp.dps = 100
-            # x = mp.mpf(int(''.join(map(str,x))))
-            # y = mp.mpf(int(''.join(map(str,y))))
-            start = datetime.now()
-            res = np.dot(x, y)
-            end = datetime.now() - start
-            print(f"\nРезультат умножения mpmath: {res}  \n      Время выполнения: {end}")
+                mp.dps = 100
+                # x = mp.mpf(int(''.join(map(str,x))))
+                # y = mp.mpf(int(''.join(map(str,y))))
+                start = datetime.now()
+                res = np.dot(x, y)
+                end = datetime.now() - start
+                print(f"{res} numpy: время выполнения: {end}\n\n\n\n")
 
 
 
         if choiceU == 3:
-            n = int(input("Введите размер массива: "))
-            m = random.randint(2, 4)
-            x = [[random.randint(0, 9) for _ in range(n)] for _ in range(n)]
-            y = [[random.randint(0, 9) for _ in range(n)] for _ in range(n)]
-            #x = [[1, 2], [3, 4]]
-            #y = [[5, 6], [7, 8]]
+            for n in range(100, 2000, 100):
+                print(f"Разрядность {n}\n")
+                #n = int(input("Введите размер массива: "))
+                m = random.randint(2, 4)
+                x = [[random.randint(0, 9) for _ in range(n)] for _ in range(m)]
+                y = [[random.randint(0, 9) for _ in range(m)] for _ in range(n)]
+                # x = [[1, 2], [3, 4]]
+                # y = [[5, 6], [7, 8]]
 
-            print(f"{x}")
-            print(f"{y}")
-            start = datetime.now()
-            result = matrix_multiply(x, y)
-            end = datetime.now() - start
-            print(f"Результат умножения: {result} \n        Время выполнения: {end}\n\n")
+                #print(f"x= {x}")
+                #print(f"y= {y}")
+                start = datetime.now()
+                result = matrix_multiply(x, y)
+                end = datetime.now() - start
+                print(f"Собственный алгоритм умножение матриц:  время выполнения: {end}\n")
 
-            mp.dps = 100
-            #x = mp.mpf(int(''.join(map(str,x))))
-            #y = mp.mpf(int(''.join(map(str,y))))
-            start = datetime.now()
-            res = np.dot(x, y)
-            end = datetime.now() - start
-            print(f"\nРезультат умножения mpmath: {res}  \n      Время выполнения: {end}")
+                mp.dps = 100
+                # x = mp.mpf(int(''.join(map(str,x))))
+                # y = mp.mpf(int(''.join(map(str,y))))
+                start = datetime.now()
+                res = np.dot(x, y)
+                end = datetime.now() - start
+                print(f"numpy умножения mpmath:  время выполнения: {end}\n\n\n\n")
 
 
 def matrix_multiply(A, B):
